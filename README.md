@@ -1,4 +1,8 @@
 # Hamming-Code-8-4
+## What it is
+Hamming code (8,4) enables us to send 4-bit messages through a 8-bit channel with noise correction.
+The code is robust against any 1-bit flip. Useful for serial port messaging, among other things.
+
 Here we provide files with hamming (8, 4) encoding and decoding as a map.
 Encoding and decoding are provided in both CSV and JSON format.
 
