@@ -1,6 +1,6 @@
 # Hamming Code Maps
-- JSON and CSV mappings for Hamming Codes
-- Not specific to a programming language
+- JSON and CSV mappings for Hamming Codes (in `maps_8_4`)
+- Not specific to a programming language (the code in `src` was used to generate and validate the mappings)
 - Suggested use: download the mappings or access directly through github raw (see **Usage** below)
 
 ## What it is
@@ -23,8 +23,8 @@ The python code that was used to generate the encodings is also provided, but it
 ## Usage
 You can use the files in whatever language you want. Here I show an example with python:
 ```python
-encoding_map = pd.read_csv("https://raw.githubusercontent.com/EstevaoUyra/Hamming-Code-8-4/main/encoding.csv", dtype=str)
-decoding_map = pd.read_csv("https://raw.githubusercontent.com/EstevaoUyra/Hamming-Code-8-4/main/decoding.csv", dtype=str)
+encoding_map = pd.read_csv("https://raw.githubusercontent.com/EstevaoUyra/Hamming-Code-8-4/main/maps_8_4/encoding.csv", dtype=str)
+decoding_map = pd.read_csv("https://raw.githubusercontent.com/EstevaoUyra/Hamming-Code-8-4/main/maps_8_4/decoding.csv", dtype=str)
 encode = lambda s: encoding_map[encoding_map.message==s].encoded_message.values[0]
 decode = lambda s: decoding_map[decoding_map.encoded_message==s].message.values[0]
 ```
@@ -39,3 +39,21 @@ Output: `'11010010'`
 >>> decode('11010010')
 ```
 Output: `'0001'`
+
+## What if there is more than one flip
+- With 1 flip, the message is recovered with 100% accuracy.
+- With 3 flips, the message is irrecoverable and undetectable
+- With 2 flips, we can either detect with 100% accuracy or recover with 25%.
+
+We provide two decoding mappings, depending on how you want to deal with uncorrectable errors (i.e. when 2 bits are flipped). 
+1. `decoding` detects 100% of 2-flip errors, returning an error message.
+2. `decoding_guess` tries to correct the 2-flip errors to the most probable message, getting it right 25% of the time. 
+
+We ran validation in `src/test_performance.py`. You can see that the encodings provided are 100% robust to single flips.
+
+flips|correct|guess_correct
+---|---|---
+0|100%|100%
+1|100%|100%
+2|0%|25%
+
